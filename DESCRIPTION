@@ -14,5 +14,6 @@ Imports:
     janitor,
     purrr,
     readxl,
+    rlang,
     stringr,
     tidyr
