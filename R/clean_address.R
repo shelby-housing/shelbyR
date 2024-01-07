@@ -18,21 +18,24 @@ clean_address <- function(df, adr_col) {
     "hi", "id", "il", "in", "ia", "ks", "ky", "la", "me", "md",
     "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj",
     "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc",
-    "sd", "tn", "tx", "ut", "vt", "va", "wa", "wv", "wi", "wy"
+    "sd", "tn", "tx", "ut", "vt", "va", "wa", "wv", "wi"
+    # "wy"
   )
 
   # place/city
-  t_place <- c(
-    "memphis",
-    "collierville",
-    "(?<!(raleigh|old|cuba) )millington",
-    "cordova",
-    "eads",
-    "(?<!old )brownsville",
-    "austin",
-    "houston",
-    "friendswood"
-  )
+  t_place <- str_c("(?<!\\d( (n|s|e|w|west|new|south))? )(",
+                   str_flatten(c(
+                     "memphis",
+                     "collierville",
+                     "(?<!(ral[ei]{2}gh|old|cuba) )millington",
+                     "cordova",
+                     "eads",
+                     "(?<!old )brownsville",
+                     "austin",
+                     "houston",
+                     "friendswood"
+                   ), collapse = "|"),
+                   ")")
 
   # building
   t_bldg <- "(?<=bldg )\\w+"
@@ -61,8 +64,34 @@ clean_address <- function(df, adr_col) {
   # street ending
     # abbreviate endings
   end_tbl <- tidyr::tibble(
-    input = c("cove", "drive", "street"),
-    output = c("cv", "dr", "st")
+    input = c(
+      "avenue",
+      "boulevard",
+      "circle",
+      "circle",
+      "court",
+      "cove",
+      "drive",
+      "lane",
+      "place",
+      "road",
+      "street",
+      "way"
+    ),
+    output = c(
+      "ave",
+      "blvd",
+      "cir",
+      "cl",
+      "ct",
+      "cv",
+      "dr",
+      "ln",
+      "pl",
+      "rd",
+      "st",
+      "wy"
+    )
   )
   end_tbl$input <- paste0("(?<!^)\\b", end_tbl$input, "\\b$")
   r_end <- rlang::set_names(end_tbl$output, end_tbl$input)
@@ -116,8 +145,15 @@ clean_address <- function(df, adr_col) {
       # directions
       temp_adr = str_replace_all(temp_adr, r_dir),
       dir_1 = extract_address_part(temp_adr, "dir_1", t_dir),
-      temp_adr = remove_address_part(temp_adr, "dir_1", t_dir)
-    )
+      temp_adr = remove_address_part(temp_adr, "dir_1", t_dir),
+      dir_2 = extract_address_part(temp_adr, "dir_2", t_dir),
+      temp_adr = remove_address_part(temp_adr, "dir_2", t_dir),
+      # reformat
+      across(c(temp_adr, street_end, starts_with("dir_")), ~ str_to_title(.x)),
+      state = str_to_upper(state),
+      street_name = temp_adr
+    ) |>
+    select(-temp_adr)
 
 }
 

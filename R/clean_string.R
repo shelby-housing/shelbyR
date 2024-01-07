@@ -8,6 +8,7 @@
 #' @return A Title Case String.
 #'
 #' @import stringr
+#' @export
 clean_string <- function(x, case = FALSE, punct = TRUE, spaces = TRUE) {
   if (punct == FALSE) {
     x <- str_replace_all(x, "[:punct:]|[:symbol:]", " ")

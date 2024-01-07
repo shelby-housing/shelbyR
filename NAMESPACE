@@ -2,6 +2,7 @@
 
 export(clean_address)
 export(clean_columns)
+export(clean_string)
 export(get_rehab_filepath)
 export(install_rehab_folder)
 export(read_bids)
