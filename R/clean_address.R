@@ -1,9 +1,19 @@
+#' Cleaner Addresses
+#'
+#' @param df dataframe containing addresses and "street_number" & "street_name" columns
+#'
+#' @return dataframe with cleaned address columns and extra columns removed.
+#' @export
+cleaner_adr <- function(df) {
+  df |> unite(address, street_number, street_name, sep = " ") |> clean_address(address) |> select(street_number, street_name, everything()) |> janitor::remove_empty("cols")
+}
+
 #' Clean / Separate an address column
 #'
 #' @param df dataframe containing addresses
 #' @param adr_col column containing addresses
 #'
-#' @import rlang
+#' @import purrr
 #'
 #' @return dataframe with cleaned address columns and original address column
 #' @export
@@ -59,7 +69,7 @@ clean_address <- function(df, adr_col) {
     output = c("hwy", "ext")
   )
   special_tbl$input <- paste0("\\b", special_tbl$input, "\\b")
-  r_special <- rlang::set_names(special_tbl$output, special_tbl$input)
+  r_special <- purrr::set_names(special_tbl$output, special_tbl$input)
 
   # street ending
     # abbreviate endings
@@ -94,7 +104,7 @@ clean_address <- function(df, adr_col) {
     )
   )
   end_tbl$input <- paste0("(?<!^)\\b", end_tbl$input, "\\b$")
-  r_end <- rlang::set_names(end_tbl$output, end_tbl$input)
+  r_end <- purrr::set_names(end_tbl$output, end_tbl$input)
     # remove endings
   t_end <- as.vector(end_tbl$output)
 
@@ -105,7 +115,7 @@ clean_address <- function(df, adr_col) {
     output = c("n", "s", "e", "w")
   )
   dir_tbl$input <- paste0("^", dir_tbl$input, "\\b(?!$)")
-  r_dir <- rlang::set_names(dir_tbl$output, dir_tbl$input)
+  r_dir <- purrr::set_names(dir_tbl$output, dir_tbl$input)
     # remove directions
   t_dir <- dir_tbl[, "output"] |> add_row(output = c("sw", "ne", "se", "nw"))
   t_dir <- as.vector(t_dir$output)
