@@ -7,8 +7,7 @@
 #' @export
 #'
 #' @import tidyr
-#' @importFrom purrr map
-#' @importFrom purrr list_rbind
+#' @import purrr
 read_bids <- function(bid_date, nested = TRUE) {
 
   a <- get_rehab_filepath("bids")
