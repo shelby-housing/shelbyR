@@ -14,7 +14,7 @@
 #' @export
 get_rehab_data <- function(dataset) {
 
-  if (dataset %in% c("bids", "FY23", "cancelled")) {
+  if (dataset %in% c("bids", "FY23", "cancelled", "queue")) {
     fp <- get_rehab_filepath("rehab cases")
 
     if (dataset %in% c("bids", "FY23")) {
@@ -35,8 +35,7 @@ get_rehab_data <- function(dataset) {
     } else if (dataset == "queue") {
       df <- read_excel(fp, sheet = 5, skip = 1) |>
         janitor::clean_names() |>
-        select(neighborly_id, location:parcel)
-      df <- df |>
+        select(neighborly_id, location:parcel) |>
         clean_address(address) |>
         janitor::remove_empty("cols")
     }
