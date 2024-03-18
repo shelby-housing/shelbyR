@@ -1,23 +1,17 @@
 #' Read bids from a certain date.
 #'
 #' @param bid_date The date of the bid opening & date of the folder to get bidsheets.
-#' @param nested Are the bid sheets nested in the folder?
 #'
 #' @return A table of bid information
 #' @export
 #'
 #' @import tidyr
 #' @import purrr
-read_bids <- function(bid_date, nested = TRUE) {
+read_bids <- function(bid_date) {
 
   a <- get_rehab_filepath("bids")
-  d <- paste0(a, bid_date, "/")
-
-  if (nested == TRUE) {
-    filepath <- paste0(d, list.files(d, recursive = TRUE, pattern = "\\d+ - .*.xlsx"))
-  } else {
-    filepath <- paste0(d, list.files(d, pattern = ".xlsx"))
-  }
+  d <- paste0(a, bid_date)
+  filepath <- list.files(d, pattern = "\\d+ - .*.xlsx", recursive = TRUE, full.names = TRUE)
 
   map(filepath, read_bid) %>% list_rbind()
 }

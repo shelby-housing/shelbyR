@@ -4,12 +4,10 @@
 \alias{read_bids}
 \title{Read bids from a certain date.}
 \usage{
-read_bids(bid_date, nested = TRUE)
+read_bids(bid_date)
 }
 \arguments{
 \item{bid_date}{The date of the bid opening & date of the folder to get bidsheets.}
-
-\item{nested}{Are the bid sheets nested in the folder?}
 }
 \value{
 A table of bid information
