@@ -27,9 +27,11 @@ install_rehab_folder <- function(filepath) {
 #'
 #' @param file The file or folder to get the filepath for. Options:
 #'
-#'  * "none" (the default): get the main folder filepath
-#'  * "rehab cases": get the rehab cases spreadsheet
-#'  * "bids": get the bid days folder
+#'  * `NULL` (the default): get the main folder filepath
+#'  * `rehab cases`: get the rehab cases spreadsheet
+#'  * `bids`: get the bid days folder
+#'  * `neighborly`: get neighborly data in archive folder
+#'  * `contractors`: get contractor data
 #'
 #' @return A character string
 #' @export
@@ -37,7 +39,7 @@ install_rehab_folder <- function(filepath) {
 #' @examples
 #' # Get the bid folder
 #' get_rehab_filepath("bids")
-get_rehab_filepath <- function(file = "none") {
+get_rehab_filepath <- function(file = NULL) {
   fp <- Sys.getenv("LEAD_REHAB_DIR")
 
   if (nchar(fp) == 0) {
@@ -57,24 +59,22 @@ get_rehab_filepath <- function(file = "none") {
   }
 }
 
-get_neighborly_data <- function(folder = NULL) {
+#' @export
+get_rehab_data <- function(data = NULL) {
 
-  if (is.null(folder)) {
+  if (data == "neighborly") {
     folder <- get_rehab_filepath("neighborly")
+    list.files(folder,
+               pattern = "DataExport_.*.xlsx",
+               full.names = TRUE)
   }
 
-  list.files(folder,
-             pattern = "DataExport_.*.xlsx",
-             full.names = TRUE)
-}
-
-get_contractors <- function(folder = NULL) {
-
-  if (is.null(folder)) {
+  if (data == "contractors") {
     folder <- get_rehab_filepath("contractors")
+    list.files(folder,
+               pattern = "contractor-docs.xlsx",
+               full.names = TRUE)
   }
 
-  list.files(folder,
-             pattern = "contractor-docs.xlsx",
-             full.names = TRUE)
 }
+
