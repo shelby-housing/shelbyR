@@ -59,6 +59,10 @@ get_rehab_filepath <- function(file = NULL) {
   }
 }
 
+#' Get rehab files
+#' @param data The files to retrieve
+#'    * `neighborly`: Neighborly data in archive
+#'    * `contractors`: Contractor doc file
 #' @export
 get_rehab_data <- function(data = NULL) {
 

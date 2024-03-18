@@ -4,14 +4,16 @@
 \alias{get_rehab_filepath}
 \title{Get the filepath for a rehab file/folder}
 \usage{
-get_rehab_filepath(file = "none")
+get_rehab_filepath(file = NULL)
 }
 \arguments{
 \item{file}{The file or folder to get the filepath for. Options:
 \itemize{
-\item "none" (the default): get the main folder filepath
-\item "rehab cases": get the rehab cases spreadsheet
-\item "bids": get the bid days folder
+\item \code{NULL} (the default): get the main folder filepath
+\item \verb{rehab cases}: get the rehab cases spreadsheet
+\item \code{bids}: get the bid days folder
+\item \code{neighborly}: get neighborly data in archive folder
+\item \code{contractors}: get contractor data
 }}
 }
 \value{
