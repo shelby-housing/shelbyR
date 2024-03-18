@@ -47,38 +47,23 @@ get_rehab_filepath <- function(file = NULL) {
   }
 
   if (file == "rehab cases") {
-    file.path(fp, "Rehab Cases by Program Year.xlsx")
+    fp <- file.path(fp, "Rehab Cases by Program Year.xlsx")
   } else if (file == "bids") {
-    file.path(fp, "Bid Days/")
+    fp <- file.path(fp, "Bid Days/")
   } else if (file == "neighborly") {
-    file.path(fp, "archive")
+    fp <- file.path(fp, "archive")
+    fp <- list.files(fp,
+                     pattern = "DataExport_.*.xlsx",
+                     full.names = TRUE)
   } else if (file == "contractors") {
-    file.path(fp, "contractors")
+    fp <- file.path(fp, "contractors")
+    fp <- list.files(fp,
+                     pattern = "contractor-docs.xlsx",
+                     full.names = TRUE)
   } else {
     fp
   }
-}
 
-#' Get rehab files
-#' @param data The files to retrieve
-#'    * `neighborly`: Neighborly data in archive
-#'    * `contractors`: Contractor doc file
-#' @export
-get_rehab_data <- function(data = NULL) {
-
-  if (data == "neighborly") {
-    folder <- get_rehab_filepath("neighborly")
-    list.files(folder,
-               pattern = "DataExport_.*.xlsx",
-               full.names = TRUE)
-  }
-
-  if (data == "contractors") {
-    folder <- get_rehab_filepath("contractors")
-    list.files(folder,
-               pattern = "contractor-docs.xlsx",
-               full.names = TRUE)
-  }
-
+  fp
 }
 
