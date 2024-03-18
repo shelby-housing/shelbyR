@@ -4,17 +4,19 @@
 \alias{get_register}
 \title{Get register's data}
 \usage{
-get_register(vec, field = "address")
+get_register(vec, field = "address", cache = TRUE)
 }
 \arguments{
-\item{vec}{Vector of data (for one field) to search}
+\item{vec}{Vector of search items for one field (such as a list of addresses).}
 
-\item{field}{The field to search. Options:
+\item{field}{Search field to use. Options:
 \itemize{
 \item "address" (the default)
 \item record_number
 \item parcel
 }}
+
+\item{cache}{Use cache directory.}
 }
 \value{
 dataframe with search results
