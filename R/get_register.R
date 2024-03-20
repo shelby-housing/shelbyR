@@ -22,12 +22,7 @@ get_register <- function(vec, field = "address", cache = TRUE) {
   # Use cache
   if (cache) {
 
-    cache_dir <- paste0(Sys.getenv("MY_DATA_FOLDER"), "register")
-
-    # Create cache directory if it doesn't exist
-    if (!file.exists(cache_dir)) {
-      dir.create(cache_dir)
-    }
+    cache_dir <- shelbyR_cache_dir("registers")
 
     if (file.exists(cache_dir)) {
 

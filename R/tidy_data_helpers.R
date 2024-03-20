@@ -1,3 +1,65 @@
+#' Clean a string to Title Case & string squish
+#'
+#' @param x A string to clean
+#' @param case "lower", "upper", "title", or "title up" for title case with three letter segments in uppercase (useful for many abbreviations).
+#' @param punct Keep punctuation?
+#' @param spaces Keep spaces?
+#'
+#' @return A Title Case String.
+#'
+#' @import stringr
+#' @export
+clean_string <- function(x, case = FALSE, punct = TRUE, spaces = TRUE) {
+
+  if (punct == FALSE) {
+    x <- str_replace_all(x, "[:punct:]|[:symbol:]", " ")
+  }
+
+  if (case == "title") {
+    x <- str_to_title(x)
+  } else if (case == "title up") {
+    x <- str_to_title(x)
+    x <- str_replace_all(x, "\\b[\\w[:punct:]]{3}\\b", toupper)
+  } else if (case == "lower") {
+    x <- str_to_lower(x)
+  } else if (case == "upper") {
+    x <- str_to_upper(x)
+  } else {
+    x
+  }
+
+  if (spaces == FALSE) {
+    x <- str_remove_all(x, "\\s")
+  }
+
+  x <- str_squish(x)
+}
+
+#' Clean columns and remove empty columns
+#'
+#' @param df A data frame to clean
+#' @param sort Sort the columns by name
+#' @param all_character Change all columns to character type?
+#'
+#' @return A cleaned dataframe.
+#' @export
+#'
+#' @import dplyr
+#' @importFrom janitor clean_names remove_empty
+clean_columns <- function(df, sort = FALSE, all_character = FALSE) {
+  df <- df %>% clean_names() %>% remove_empty("cols")
+
+  if (sort == TRUE) {
+    df <- df %>% select(sort(names(.)))
+  }
+
+  if (all_character == TRUE) {
+    df %>% mutate(across(everything(), ~ as.character(.x)))
+  }
+
+  df
+}
+
 #' Cleaner Addresses
 #'
 #' @param df dataframe containing addresses and "street_number" & "street_name" columns
@@ -57,8 +119,8 @@ clean_address <- function(df, adr_col) {
   # unit/suite
   t_unit <- str_c("(?<!(hwy|highway))",
                   "(", str_flatten(c(
-    "s(ui)?te", "apt", "unit"
-    ), collapse = "|"), ")? \\d+")
+                    "s(ui)?te", "apt", "unit"
+                  ), collapse = "|"), ")? \\d+")
   r_unit <- str_c(
     "(?<!(hwy|highway))(",
     str_flatten(c("s(ui)?te", "apt", "unit"), collapse = "|"),
@@ -76,7 +138,7 @@ clean_address <- function(df, adr_col) {
   r_special <- purrr::set_names(special_tbl$output, special_tbl$input)
 
   # street ending
-    # abbreviate endings
+  # abbreviate endings
   end_tbl <- tidyr::tibble(
     input = c(
       "avenue",
@@ -109,18 +171,18 @@ clean_address <- function(df, adr_col) {
   )
   end_tbl$input <- paste0("(?<!^)\\b", end_tbl$input, "\\b$")
   r_end <- purrr::set_names(end_tbl$output, end_tbl$input)
-    # remove endings
+  # remove endings
   t_end <- as.vector(end_tbl$output)
 
   # street directions
-    # abbreviate directions
+  # abbreviate directions
   dir_tbl <- tidyr::tibble(
     input = c("north", "south", "east", "west"),
     output = c("n", "s", "e", "w")
   )
   dir_tbl$input <- paste0("^", dir_tbl$input, "\\b(?!$)")
   r_dir <- purrr::set_names(dir_tbl$output, dir_tbl$input)
-    # remove directions
+  # remove directions
   t_dir <- dir_tbl[, "output"] |> add_row(output = c("sw", "ne", "se", "nw"))
   t_dir <- as.vector(t_dir$output)
 
