@@ -59,6 +59,10 @@ clean_address <- function(df, adr_col) {
                   "(", str_flatten(c(
     "s(ui)?te", "apt", "unit"
     ), collapse = "|"), ")? \\d+")
+  r_unit <- str_c(
+    "(?<!(hwy|highway))(",
+    str_flatten(c("s(ui)?te", "apt", "unit"), collapse = "|"),
+    ")( #)?( )?\\d+.*")
 
   # street number
   t_st_no <- "\\d+"
@@ -142,7 +146,7 @@ clean_address <- function(df, adr_col) {
       temp_adr = remove_address_part(temp_adr, "box", t_box),
       # unit
       unit = extract_address_part(temp_adr, "unit", t_unit),
-      temp_adr = remove_address_part(temp_adr, "unit", t_unit),
+      temp_adr = remove_address_part(temp_adr, "unit", r_unit),
       # street number
       street_number = extract_address_part(temp_adr, "st_no", t_st_no),
       temp_adr = remove_address_part(temp_adr, "st_no", t_st_no),

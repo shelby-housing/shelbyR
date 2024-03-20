@@ -6,8 +6,6 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of shelbyR is to …
-
 ## Installation
 
 You can install the development version of shelbyR from
@@ -26,3 +24,61 @@ This is a basic example which shows you how to solve a common problem:
 library(shelbyR)
 ## basic example code
 ```
+
+# Functions
+
+Data:
+
+- **`shelbyR_raw_paths`**: A tibble with file shorthand, basepath to the
+  file, file pattern to search for, and excel sheet.
+
+``` r
+shelbyR::shelbyR_raw_paths
+```
+
+File functions:
+
+- **`shelbyR_set_path`**: Set the path to your Lead + Rehab folder.
+- **`shelbyR_get_path`**: Get the file path to rehab file(s).
+- **`shelbyR_cache_dir`**: Get file path to the shelbyR cache folder.
+
+Get functions:
+
+- **`shelbyR_read_dataraw`**: Read the specified excel file.
+
+- **`shelbyR_update_cache`**: WORK IN PROGRESS
+
+- **`read_bids`**: Read bids for a specified bid date (“YYYY-MM-DD”
+  format).
+
+- **`get_register`**: Scrape the register’s website.
+
+- **`get_rehab_data`**: TODO: rename actually a tidy function
+
+- **`get_bid_dates`**: TODO: actually a tidy function for pulling bid
+  dates from log files.
+
+Tidy functions:
+
+- **`clean_string`**: Combines multiple stringr functions to clean
+  strings. With no params set, only runs `stringr::str_squish()`.
+
+  - **case**: “title”, “title up”, “lower”, “upper”, or FALSE (the
+    default)
+  - **punct**: Set to FALSE to replace punctuation & symbols with a
+    space (default TRUE)
+  - **spaces**: Set to FALSE to remove all spaces (default TRUE)
+
+- **`clean_columns`**: Combines `janitor::clean_names()` and
+  `remove_empty("cols")`
+
+  - **sort**: Organize columns by name (default FALSE)
+  - **all_character**: Change all columns to character format.
+
+- **`clean_address`**: Clean/Separate an address column.
+
+- **`cleaner_adr`**: PENDING REMOVAL.
+
+- **`clean_rehab`**: PENDING REMOVAL.
+
+- **`clean_idis`**: PENDING REMOVAL.

@@ -4,19 +4,10 @@
 \alias{get_rehab_data}
 \title{Get rehab data}
 \usage{
-get_rehab_data(dataset)
+get_rehab_data(file)
 }
 \arguments{
-\item{dataset}{The dataset to call
-\itemize{
-\item \code{bids}
-\item \code{FY23}
-\item \code{cancelled}
-\item \code{queue}
-\item \code{contractors}
-\item \verb{neighborly cases}
-\item \verb{neighborly logs}
-}}
+\item{file}{The file to call. See shelbyR_raw_paths$file for all}
 }
 \description{
 Get rehab data
