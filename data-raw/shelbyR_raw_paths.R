@@ -11,6 +11,7 @@ shelbyR_raw_paths <- tibble(
     "contractor docs",
     "neighborly rehab",
     "neighborly lead",
+    "neighborly lead logs",
     "neighborly logs",
     "contractor names"
   ),
@@ -21,6 +22,7 @@ shelbyR_raw_paths <- tibble(
     "Rehab Cases by Program Year.xlsx",
     "Rehab Cases by Program Year.xlsx",
     "Bid Days",
+    "archive",
     "archive",
     "archive",
     "archive",
@@ -37,6 +39,7 @@ shelbyR_raw_paths <- tibble(
     "Contractors_.*.xlsx",
     "DataExport_Home.*.xlsx",
     "DataExport_Lead.*.xlsx",
+    "DataExport_Lead.*.xlsx",
     "DataExport_Home.*.xlsx",
     NA_character_
   ),
@@ -51,11 +54,13 @@ shelbyR_raw_paths <- tibble(
     "Cases",
     "Cases",
     "Case Audit Logs",
+    "Case Audit Logs",
     "contractor-docs"
   ),
   skip = c(
     0,
     1,
+    0,
     0,
     0,
     0,
