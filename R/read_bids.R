@@ -9,7 +9,7 @@
 #' @import purrr
 read_bids <- function(bid_date) {
 
-  a <- get_rehab_filepath("bids")
+  a <- shelbyR_get_path("bids")
   d <- paste0(a, .Platform$file.sep, bid_date)
   filepath <- list.files(d, pattern = "\\d+ - .*.xlsx", recursive = TRUE, full.names = TRUE)
 

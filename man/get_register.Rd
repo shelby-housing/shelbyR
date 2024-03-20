@@ -11,9 +11,9 @@ get_register(vec, field = "address", cache = TRUE)
 
 \item{field}{Search field to use. Options:
 \itemize{
-\item "address" (the default)
-\item record_number
-\item parcel
+\item \code{address} (the default)
+\item \code{record_number}
+\item \code{parcel}
 }}
 
 \item{cache}{Use cache directory.}

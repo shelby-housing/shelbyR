@@ -3,16 +3,13 @@
 #' @param vec Vector of search items for one field (such as a list of addresses).
 #' @param field Search field to use. Options:
 #'
-#'  * "address" (the default)
-#'  * record_number
-#'  * parcel
+#'  * `address` (the default)
+#'  * `record_number`
+#'  * `parcel`
 #'
 #' @param cache Use cache directory.
 #'
-#' @import rvest
-#' @import purrr
-#' @import dplyr
-#' @import stringr
+#' @import rvest purrr dplyr stringr
 #' @importFrom readr read_rds write_rds
 #'
 #' @return dataframe with search results

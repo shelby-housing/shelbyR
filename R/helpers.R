@@ -23,74 +23,6 @@ shelbyR_set_path <- function(filepath) {
   message('Your folderpath has been stored in your .Renviron. \nAccess it with Sys.getenv("LEAD_REHAB_DIR"). \nTo use now, restart R or run `readRenviron("~/.Renviron")`')
 }
 
-shelbyR_raw_paths <- tibble(
-  file = c(
-    "rehab cases",
-    "queue",
-    "older cases",
-    "cancelled",
-    "recert",
-    "bids",
-    "contractor docs",
-    "neighborly rehab",
-    "neighborly lead",
-    "neighborly logs",
-    "contractor names"
-  ),
-  base = c(
-    "Rehab Cases by Program Year.xlsx",
-    "Rehab Cases by Program Year.xlsx",
-    "Rehab Cases by Program Year.xlsx",
-    "Rehab Cases by Program Year.xlsx",
-    "Rehab Cases by Program Year.xlsx",
-    "Bid Days",
-    "archive",
-    "archive",
-    "archive",
-    "archive",
-    paste0("contractors", .Platform$file.sep, "contractor-docs.xlsx")
-  ),
-  pattern = c(
-    NA_character_,
-    NA_character_,
-    NA_character_,
-    NA_character_,
-    NA_character_,
-    NA_character_,
-    "Contractors_.*.xlsx",
-    "DataExport_Home.*.xlsx",
-    "DataExport_Lead.*.xlsx",
-    "DataExport_Home.*.xlsx",
-    NA_character_
-  ),
-  sheet = c(
-    "PY23",
-    "Queue",
-    "PY21-22",
-    "Cancelled",
-    "Recert",
-    NA_character_,
-    "Contractors",
-    "Cases",
-    "Cases",
-    "Case Audit Logs",
-    "contractor-docs"
-  ),
-  skip = c(
-    0,
-    1,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
-  )
-)
-
 #' Get the filepath for a rehab file/folder
 #'
 #' @param file The file or folder to get the filepath for.
@@ -190,8 +122,9 @@ shelbyR_cache_dir <- function(folder = NULL) {
 #'
 #' @export
 #'
-#' @import rappdirs
-#' @importFrom readr read_csv
+#' @import rappdirs dplyr
+#' @importFrom readr read_csv write_csv
+#' @importFrom lubridate today
 shelbyR_update_cache <- function(file) {
 
   # get the cache
@@ -200,11 +133,30 @@ shelbyR_update_cache <- function(file) {
   # file <- "contractor docs"
 
   raw_file <- file.path(raw_dir, paste0(gsub(" ", "-", file), ".csv"))
+  df <- shelbyR_read_dataraw(file)
+  raw_changes_file <- gsub(".csv", "-changes.csv", raw_file)
 
-  if (!file.exists(raw_file)) {
-    rehab_file <- shelbyR_get_path(file)
+  # find changes to cache data
+  if (file.exists(raw_file)) {
+    existing_data <- read_csv(raw_file)
+    data_changes <- anti_join(existing_data, df)
+
+    # record changes to cache
+    if (nrow(data_changes) > 0) {
+      data_changes$file_date_change <- today()
+      data_changes$file_name <- {{ file }}
+      data_changes <- data_changes |> select(file_name, file_date_change, everything())
+      if (file.exists(raw_changes_file)) {
+        existing_changes <- read_csv(raw_changes_file)
+        data_changes <- bind_rows(data_changes, existing_changes)
+      }
+      write_csv(data_changes, raw_changes_file)
+
+    }
   }
 
+  write_csv(df, raw_file)
+  df
 }
 
 #' Clean a string to Title Case & string squish

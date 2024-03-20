@@ -18,9 +18,7 @@ You can install the development version of shelbyR from [GitHub](https://github.
 devtools::install_github("shelby-housing/shelbyR")
 ```
 
-## Read bids
-
-This is a basic example which shows you how to solve a common problem:
+Load the package:
 
 ```{r example}
 library(shelbyR)
@@ -42,14 +40,12 @@ File functions:
 - **`shelbyR_set_path`**: Set the path to your Lead + Rehab folder.
 - **`shelbyR_get_path`**: Get the file path to rehab file(s).
 - **`shelbyR_cache_dir`**: Get file path to the shelbyR cache folder. 
-
 Get functions:
 
 - **`shelbyR_read_dataraw`**: Read the specified excel file.
-- **`shelbyR_update_cache`**: WORK IN PROGRESS
+- **`shelbyR_update_cache`**: Get latest data and update cache file, recording changes.
 - **`read_bids`**: Read bids for a specified bid date ("YYYY-MM-DD" format).
 - **`get_register`**: Scrape the register's website.
-
 - **`get_rehab_data`**: TODO: rename actually a tidy function
 - **`get_bid_dates`**: TODO: actually a tidy function for pulling bid dates from log files.
 
@@ -63,7 +59,6 @@ Tidy functions:
   - **sort**: Organize columns by name (default FALSE)
   - **all_character**: Change all columns to character format.
 - **`clean_address`**: Clean/Separate an address column.
-
 - **`cleaner_adr`**: PENDING REMOVAL. 
 - **`clean_rehab`**: PENDING REMOVAL.
 - **`clean_idis`**: PENDING REMOVAL.
